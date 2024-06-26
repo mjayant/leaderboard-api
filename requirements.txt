@@ -1,0 +1,7 @@
+Flask
+flask-pymongo
+boto3
+apscheduler
+pyyaml
+swagger-ui-bundle
+python-dotenv
