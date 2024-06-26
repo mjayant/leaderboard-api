@@ -1,0 +1,93 @@
+swagger: '2.0'
+info:
+  version: "1.0.0"
+  title: "Leaderboard API"
+basePath: "/"
+schemes:
+  - "http"
+paths:
+  /users:
+    post:
+      summary: "Create a new user"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - in: "formData"
+          name: "name"
+          type: "string"
+          required: true
+        - in: "formData"
+          name: "age"
+          type: "integer"
+          required: true
+        - in: "formData"
+          name: "address"
+          type: "string"
+          required: true
+        - in: "formData"
+          name: "photo"
+          type: "file"
+          required: true
+      responses:
+        201:
+          description: "User created"
+        400:
+          description: "Invalid input"
+  /users/{user_id}:
+    delete:
+      summary: "Delete a user"
+      parameters:
+        - name: "user_id"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "User deleted"
+        404:
+          description: "User not found"
+    get:
+      summary: "Get user details"
+      parameters:
+        - name: "user_id"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "User details"
+        404:
+          description: "User not found"
+  /users/{user_id}/points:
+    patch:
+      summary: "Update user points"
+      parameters:
+        - name: "user_id"
+          in: "path"
+          required: true
+          type: "string"
+        - name: "increment"
+          in: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              increment:
+                type: "integer"
+      responses:
+        200:
+          description: "Points updated"
+        404:
+          description: "User not found"
+  /leaderboard:
+    get:
+      summary: "Get the leaderboard"
+      responses:
+        200:
+          description: "Leaderboard"
+  /grouped_users:
+    get:
+      summary: "Get users grouped by score with average age"
+      responses:
+        200:
+          description: "Grouped users"
