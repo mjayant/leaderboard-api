@@ -1,79 +1,97 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
+  description: "This is the API documentation for the leaderboard API."
   version: "1.0.0"
   title: "Leaderboard API"
+host: "localhost:5000"
 basePath: "/"
+tags:
+- name: "users"
+  description: "Operations about users"
+- name: "leaderboard"
+  description: "Operations about leaderboard"
 schemes:
-  - "http"
+- "http"
 paths:
   /users:
     post:
+      tags:
+      - "users"
       summary: "Create a new user"
+      operationId: "createUser"
       consumes:
-        - "multipart/form-data"
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
-        - in: "formData"
-          name: "name"
-          type: "string"
-          required: true
-        - in: "formData"
-          name: "age"
-          type: "integer"
-          required: true
-        - in: "formData"
-          name: "address"
-          type: "string"
-          required: true
-        - in: "formData"
-          name: "photo"
-          type: "file"
-          required: true
-      responses:
-        201:
-          description: "User created"
-        400:
-          description: "Invalid input"
-  /users/{user_id}:
-    delete:
-      summary: "Delete a user"
-      parameters:
-        - name: "user_id"
-          in: "path"
-          required: true
-          type: "string"
+      - in: "body"
+        name: "body"
+        description: "User object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
       responses:
         200:
-          description: "User deleted"
-        404:
-          description: "User not found"
+          description: "User created"
+  /users/{user_id}:
     get:
+      tags:
+      - "users"
       summary: "Get user details"
+      operationId: "getUserById"
+      produces:
+      - "application/json"
       parameters:
-        - name: "user_id"
-          in: "path"
-          required: true
-          type: "string"
+      - name: "user_id"
+        in: "path"
+        required: true
+        type: "string"
       responses:
         200:
           description: "User details"
         404:
           description: "User not found"
+    delete:
+      tags:
+      - "users"
+      summary: "Delete a user"
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user_id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "User deleted"
+        404:
+          description: "User not found"
   /users/{user_id}/points:
     patch:
+      tags:
+      - "users"
       summary: "Update user points"
+      operationId: "updateUserPoints"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
-        - name: "user_id"
-          in: "path"
-          required: true
-          type: "string"
-        - name: "increment"
-          in: "body"
-          required: true
-          schema:
-            type: "object"
-            properties:
-              increment:
-                type: "integer"
+      - name: "user_id"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Points increment object"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            increment:
+              type: "integer"
       responses:
         200:
           description: "Points updated"
@@ -81,13 +99,40 @@ paths:
           description: "User not found"
   /leaderboard:
     get:
+      tags:
+      - "leaderboard"
       summary: "Get the leaderboard"
+      operationId: "getLeaderboard"
+      produces:
+      - "application/json"
       responses:
         200:
           description: "Leaderboard"
   /grouped_users:
     get:
+      tags:
+      - "leaderboard"
       summary: "Get users grouped by score with average age"
+      operationId: "getGroupedUsers"
+      produces:
+      - "application/json"
       responses:
         200:
           description: "Grouped users"
+definitions:
+  User:
+    type: "object"
+    required:
+    - "name"
+    - "age"
+    - "address"
+    - "photo_url"
+    properties:
+      name:
+        type: "string"
+      age:
+        type: "integer"
+      address:
+        type: "string"
+      photo_url:
+        type: "string"

@@ -1,18 +1,21 @@
-# Use a lightweight Python image
+# Use Python 3.9 slim image as base
 FROM python:3.9-slim
 
-# Set the working directory to /app
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy requirements.txt and install dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy all files from current directory to /app in the container
+COPY . .
 
-# Set environment variables for Flask
-ENV FLASK_APP=app
-ENV FLASK_RUN_HOST=0.0.0.0
+# Set PYTHONPATH environment variable to /app so Python can find your modules
+ENV PYTHONPATH=/app
 
-# Run flask as the entry point
-CMD ["flask", "run"]
+# Expose port 5000 (default Flask port)
+EXPOSE 5000
+
+# Command to run the Flask application
+CMD ["python", "app/__init__.py"]
