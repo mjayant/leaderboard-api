@@ -8,3 +8,4 @@ python-dotenv
 flask_swagger_ui
 flask-restful
 flask-swagger
+Flask-CORS

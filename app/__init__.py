@@ -1,16 +1,18 @@
 from flask import Flask, jsonify, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_pymongo import PyMongo
+from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 import os
-import logging
+from .logger import logger
 from dotenv import load_dotenv
 
 load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)  # Enable CORS for all routes
     app.config["MONGO_URI"] = os.getenv("MONGO_URI")
     app.config['S3_BUCKET'] = os.getenv('S3_BUCKET')
     app.config['S3_KEY'] = os.getenv('S3_KEY')
@@ -19,9 +21,6 @@ def create_app():
 
     mongo = PyMongo(app)
     scheduler = BackgroundScheduler()
-
-    # Setup logging
-    logging.basicConfig(level=logging.INFO)
 
     # Swagger UI configuration
     SWAGGER_URL = '/swagger'
@@ -44,7 +43,7 @@ def create_app():
 
     @app.route('/swagger.yaml')
     def swagger_yaml():
-        return send_from_directory('.', 'swagger.yaml')
+        return send_from_directory(os.path.dirname(app.root_path), 'swagger.yaml')
 
     from app.scheduler import init_scheduler, shutdown_scheduler
     # Initialize scheduler
@@ -52,7 +51,7 @@ def create_app():
 
     # Print all registered routes for debugging
     for rule in app.url_map.iter_rules():
-        app.logger.info(f"Endpoint: {rule.endpoint}, URL: {rule}")
+        logger.info(f"Endpoint: {rule.endpoint}, URL: {rule}")
 
     atexit.register(lambda: shutdown_scheduler(scheduler))
 

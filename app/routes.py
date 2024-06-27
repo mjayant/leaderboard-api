@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from bson import ObjectId
-
+from .logger import logger
 
 def init_routes(app, mongo):
     from app.models import User, Winner
@@ -102,6 +102,6 @@ def init_routes(app, mongo):
     def get_grouped_users():
         users = User.get_grouped_by_points(mongo)
         users = convert_object_ids(users)
-        app.logger.info("Users list", users)
+        logger.info("Winner Details: %s", users)
         return jsonify(users), 200
 
