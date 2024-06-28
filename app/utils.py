@@ -1,31 +1,37 @@
 import boto3
+from botocore.exceptions import NoCredentialsError, ClientError
 from werkzeug.utils import secure_filename
-from . import app
+from .logger import logger
 
-s3 = boto3.client(
-    "s3",
-    aws_access_key_id=app.config['S3_KEY'],
-    aws_secret_access_key=app.config['S3_SECRET']
-)
+def create_s3_object(access_key, secret_key):
+    try:
+        s3 = boto3.client(
+            's3',
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key
+        )
+        return s3
+    except NoCredentialsError:
+        logger.error("AWS credentials not provided or incorrect")
+        return None
 
 
-def upload_file_to_s3(file, bucket_name, acl="public-read"):
+def upload_file_to_s3(file, bucket_name, s3_obj, s3_location):
     try:
         filename = secure_filename(file.filename)
-        s3.upload_fileobj(
+        s3_obj.upload_fileobj(
             file,
             bucket_name,
             filename,
             ExtraArgs={
-                "ACL": acl,
                 "ContentType": file.content_type
             }
         )
-    except Exception as e:
-        print("Something Happened: ", e)
-        return e
+    except ClientError as e:
+        logger.error(f"Failed to upload file to S3: {e}")
+        return None
 
-    return f"{app.config['S3_LOCATION']}{filename}"
+    return f"{s3_location}{filename}"
 
 
 def allowed_file(filename):

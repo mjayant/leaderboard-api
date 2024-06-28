@@ -15,24 +15,55 @@ schemes:
 paths:
   /users:
     post:
-      tags:
-      - "users"
-      summary: "Create a new user"
-      operationId: "createUser"
+      summary: Create a new user
+      description: Creates a new user and uploads a photo to S3.
       consumes:
-      - "application/json"
-      produces:
-      - "application/json"
+      - "multipart/form-data"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "User object that needs to be added"
+      - name: "name"
+        in: "formData"
+        type: "string"
+        description: "Name of the new user"
         required: true
-        schema:
-          $ref: "#/definitions/User"
+      - name: "age"
+        in: "formData"
+        type: "integer"
+        description: "Age of the new user"
+      - name: "address"
+        in: "formData"
+        type: "string"
+        description: "Address of the new user"
+      - name: "photo"
+        in: "formData"
+        type: "file"
+        description: "Photo of the new user"
       responses:
-        200:
-          description: "User created"
+        '201':
+          description: User created successfully
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: string
+                description: The ID of the created user
+                example: "60c72b2f9f1b2c0015b8f1b0"
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Missing mandatory fields: 'name'"
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Internal Server Error
+
   /users/{user_id}:
     get:
       tags:
