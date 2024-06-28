@@ -139,17 +139,41 @@ paths:
       responses:
         200:
           description: "Leaderboard"
-  /grouped_users:
+  /grouped_by_points:
     get:
-      tags:
-      - "leaderboard"
-      summary: "Get users grouped by score with average age"
-      operationId: "getGroupedUsers"
-      produces:
-      - "application/json"
+      summary: Get users grouped by points
+      description: Returns users grouped by points along with the average age.
       responses:
-        200:
-          description: "Grouped users"
+        '200':
+          description: Users grouped by points
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    names:
+                      type: array
+                      items:
+                        type: string
+                      description: List of user names
+                      example: ["Emma"]
+                    average_age:
+                      type: number
+                      description: Average age of the users
+                      example: 18
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
+
 definitions:
   User:
     type: "object"

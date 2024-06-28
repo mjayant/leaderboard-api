@@ -19,6 +19,16 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+  test:
+    build: .
+    container_name: leaderboard_test
+    environment:
+      - FLASK_ENV=testing
+    command: python -m unittest discover tests
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
 
 volumes:
   mongo-data:

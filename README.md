@@ -1,3 +1,5 @@
+Here's a more organized and clear version of your README file:
+
 # Leaderboard API
 
 This project is a Flask-based API for managing a leaderboard. It includes endpoints for user management, point updates, and leaderboard retrieval. The application uses MongoDB for data storage and AWS S3 for file storage.
@@ -8,7 +10,7 @@ This project is a Flask-based API for managing a leaderboard. It includes endpoi
 
 2. **MongoDB Atlas**: You can use the provided MongoDB Atlas cluster or set up your own.
 
-### Using the Provided MongoDB Atlas Cluster
+## Using the Provided MongoDB Atlas Cluster
 
 1. **Whitelist Your IP Address**:
    - Ask the project owner to whitelist your IP address on their MongoDB Atlas cluster.
@@ -23,7 +25,7 @@ This project is a Flask-based API for managing a leaderboard. It includes endpoi
      S3_SECRET=your-aws-secret-key
      ```
 
-### Setting Up MongoDB Atlas (If Setting Up Your Own Cluster)
+## Setting Up MongoDB Atlas (If Setting Up Your Own Cluster)
 
 1. **Sign Up / Log In**:
    - Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and sign up for a free account or log in if you already have one.
@@ -53,25 +55,41 @@ This project is a Flask-based API for managing a leaderboard. It includes endpoi
      S3_SECRET=your-aws-secret-key
      ```
 
-### Setting Up the Project
+## Setting Up the Project
 
 1. **Clone the Repository**:
    ```bash
    git clone <your-repo-url>
    cd leaderboard-api
+   ```
 
 2. **Install Dependencies**:
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-pip install -r requirements.txt
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   pip install -r requirements.txt
+   ```
 
 3. **Build and run the Docker containers**:
+   ```bash
+   docker-compose up --build
+   ```
 
-    ```bash
-    docker-compose up --build
-    ```
+4. **Access the API**:
+   - Open your browser and go to `http://localhost:5000`
 
-4. Access the API at `http://localhost:5000`
+## Populating the Database with Initial Users
+
+To populate the database with initial users with random values, use the model factory:
+
+1. Ensure your virtual environment is activated.
+2. Run the `populate_db.py` script.
+   ```bash
+   docker-compose exec api python populate_db.py
+   ```
+3. Enter the number of users you want to create when prompted.
+
+This will insert the specified number of users into the MongoDB database with random values.
 
 ## Endpoints
 
@@ -82,6 +100,19 @@ pip install -r requirements.txt
 - `GET /leaderboard`: Get the leaderboard
 - `GET /grouped_users`: Get users grouped by score with average age
 
+## Running Tests
+To run the unit tests:
+
+    Using Docker Compose: Run the tests using the following command:
+    docker-compose run test
+This will execute all unit tests in the tests directory.
+ 
+This setup ensures that your tests run in the same environment as your application, providing consistency across different development environments.
+
+
 ## Swagger Documentation
 
 Access the Swagger documentation at `http://localhost:5000/swagger`
+
+---
+

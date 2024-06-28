@@ -39,10 +39,25 @@ class User:
     @staticmethod
     def get_grouped_by_points(mongo):
         pipeline = [
-            {"$group": {"_id": "$points", "users": {"$push": "$$ROOT"}}},
+            {
+                "$group": {
+                    "_id": "$points",
+                    "names": {"$push": "$name"},
+                    "average_age": {"$avg": "$age"}
+                }
+            },
             {"$sort": {"_id": -1}}
         ]
-        return list(mongo.db.users.aggregate(pipeline))
+        results = list(mongo.db.users.aggregate(pipeline))
+
+        # Transform the results to match the required format
+        grouped_by_points = {}
+        for result in results:
+            grouped_by_points[result["_id"]] = {
+                "names": result["names"],
+                "average_age": result["average_age"]
+            }
+        return grouped_by_points
 
 
 class Winner:

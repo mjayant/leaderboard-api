@@ -137,7 +137,7 @@ def init_routes(app, mongo):
             logger.error("An error occurred while fetching the leaderboard: %s", str(e))
             return jsonify({"error": "Internal Server Error"}), 500
 
-    @app.route('/grouped_users', methods=['GET'])
+    @app.route('/grouped_by_points', methods=['GET'])
     def get_grouped_users():
         try:
             users = User.get_grouped_by_points(mongo)
