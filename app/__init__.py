@@ -5,7 +5,7 @@ from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 import os
-from .logger import logger
+from app.logger import logger
 from dotenv import load_dotenv
 
 load_dotenv()

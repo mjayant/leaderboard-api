@@ -1,8 +1,9 @@
 import os
 from flask import request, jsonify
 from bson import ObjectId
-from .logger import logger
-from . import utils
+from app.logger import logger
+from app import utils
+
 
 def init_routes(app, mongo):
     from app.models import User, Winner

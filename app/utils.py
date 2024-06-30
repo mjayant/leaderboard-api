@@ -1,7 +1,8 @@
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
 from werkzeug.utils import secure_filename
-from .logger import logger
+from app.logger import logger
+
 
 def create_s3_object(access_key, secret_key):
     try:

@@ -1,8 +1,6 @@
 from datetime import datetime
-import logging
+from app.logger import logger
 
-# Setup logger
-from .logger import logger
 
 def identify_winner(mongo):
     try:
@@ -23,6 +21,7 @@ def identify_winner(mongo):
     except Exception as e:
         logger.error(f"An error occurred while identifying winners: {str(e)}")
 
+
 def init_scheduler(mongo, scheduler):
     try:
         if not scheduler.running:
@@ -30,6 +29,7 @@ def init_scheduler(mongo, scheduler):
             scheduler.start()
     except Exception as e:
         logger.error(f"Failed to initialize scheduler: {str(e)}")
+
 
 def shutdown_scheduler(scheduler):
     try:
