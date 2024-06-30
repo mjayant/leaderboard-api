@@ -98,7 +98,7 @@ This will insert the specified number of users into the MongoDB database with ra
 - `GET /users/<user_id>`: Get user details
 - `PATCH /users/<user_id>/points`: Update user points
 - `GET /leaderboard`: Get the leaderboard
-- `GET /grouped_users`: Get users grouped by score with average age
+- `GET /grouped_by_points`: Get users grouped by score with average age
 
 ## Running Tests
 To run the unit tests:
