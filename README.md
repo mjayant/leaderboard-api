@@ -12,10 +12,9 @@ This project is a Flask-based API for managing a leaderboard. It includes endpoi
 
 ## Using the Provided MongoDB Atlas Cluster
 
-1. **Whitelist Your IP Address**:
-   - Ask the project owner to whitelist your IP address on their MongoDB Atlas cluster.
 
-2. **Update `.env` File**:
+
+1. **Update `.env` File**:
    - The project owner will provide you with the MongoDB connection string. Update your `.env` file with this connection string.
    - Your `.env` file should look like this:
      ```plaintext
